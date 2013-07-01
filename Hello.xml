@@ -5,7 +5,14 @@
   </ModulePrefs>
   <Content type="html">
     <![CDATA[     
-       Hello, world!
+        <!DOCTYPE html>
+        <html>
+            <style>
+            </style>
+            <body>
+               Hello, world!
+            </body>
+        </html>
     ]]>
   </Content>
 </Module>
