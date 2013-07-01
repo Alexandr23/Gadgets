@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Hello Wave">
+    <Require feature="wave" /> 
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[     
+        <!DOCTYPE html>
+<html>
+<head>
+<title>Week</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+     
+
+  $(document).ready( function(){
+
+		var createtable = function (m1, y1){
+			// описание переменных и констант
+			var arr = ['Январь','Февраль','Март','Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+			var arrcount1 = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			var arrcount2 = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			var m0 = 1;
+			var y0 = 1980;
+			var s0 = 2; // день недели, на который выпало 1 января 1980 года
+			var m = m0;
+			var y = y0;
+			var d = 0;
+			var s = s0;
+			
+			while((m<m1)||(y<y1)) {if (y%4==0) {d = d + arrcount2[m-1]} else {d = d + arrcount1[m-1]}; if (m<12){m++;} else {y++; m=1;};};
+			//количество дней от 1.01.13 до 1-го числа выбранного месяца
+			s = s + (d - 1 ) % 7 + 1;  //d - количество дней от 1 января 1980 до выбранной даты; 
+						 	  		   //s - номер дня недели, на который приходится 1-ое число месяца (0 - понедельник, 1 -вторник, и т.д.)
+							  		   // -1 и + 1 на случай если s0+d кратно 7-ми, т.е. месяц начинается в воскресенье (чтоб не обнулилось, а осталось =7)
+			var b = document.getElementsByClassName('day');     //заполнение  страницы календаря
+			if (s==1){s=8};										//если месяц начинается с понедельника, то первой строкой будет неделя предыдущего месяца
+			//високосный год
+			if (y1%4==0) {
+				for (var k=s-1; k<b.length; k++){                   
+					b[k].innerHTML = (k-s+1) % arrcount2[m1-1]+1;    //заполняется текущий месяц с 1-го по послдениее число и первые дни след. месяца 
+					b[k].style.color = "black";
+					if ((k-s+1)>= arrcount2[m1-1]) {b[k].style.color = "grey"}; //дни след. месяца становятся серыми
+				};    
+				for (var k=s-2; k>=0; k=k-1) {
+					b[k].innerHTML = arrcount2[(m1+10)%12]+k-s+2;	 //заполняется дни предыдущего месяца
+					b[k].style.color = "grey";                       //дни предыдущего месяца становятся серыми
+				};
+			}
+			//невисокосный год
+			else { 
+				for (var k=s-1; k<b.length; k++){                   
+				b[k].innerHTML = (k-s+1) % arrcount1[m1-1]+1;        //заполняется текущий месяц с 1-го по послдениее число и первые дни след. месяца 
+				b[k].style.color = "black";
+				if ((k-s+1)>= arrcount1[m1-1]) {b[k].style.color = "grey"}; //дни след. месяца становятся серыми
+			}    
+			for (var k=s-2; k>=0; k=k-1) {
+				b[k].innerHTML = arrcount1[(m1+10)%12]+k-s+2;	     //заполняется дни предыдущего месяца
+				b[k].style.color = "grey";                           //дни предыдущего месяца становятся серыми
+			};
+			};
+			
+			var a = document.getElementById('month').innerHTML = arr[m1-1]+', '+y1;	//устанавливается название месяца и года				
+		};
+		
+		var m1 = 1;
+		var y1 = 2013;
+		
+		//устанавливается исходная дата (1 января 2013 года)		
+		createtable(1, 2013); 
+		
+		//устанавливается следующий месяц относительно текущего
+		$("#imgforward").click (function (){ 
+			if (m1==12) {m1=1; y1++;} else {m1++};
+			createtable(m1, y1);
+		});	
+		//устанавливается предыдущий месяц относительно текущего	
+		$("#imgback").click (function (){ 
+			if (m1==1) {y1=y1-1; m1=12;} else {m1=m1-1;}
+			createtable(m1, y1);
+		});
+        $(".day").click (function (){
+            $(".message").show();
+            $('.clicked').toggleClass('clicked');
+            $(this).toggleClass('clicked');
+        });
+			
+	});
+	
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+	.container {position: absolute;margin:0 auto; width:300px; margin-top:100px;left: 1000px;}
+	.kalend {
+		width:100%;	
+	}
+	.month {
+		text-align: center;
+		font-size: 35px;
+		line-height: 35px;
+		font-weight: bold;}
+    .message {float: left; display: none;}
+	.week {
+		list-style:none;
+		width:100%;	padding:0; margin:0;}
+	.week li{
+		float: left; width:14.2%;
+		text-align: center; padding:10px 0;}
+	.days {
+		list-style:none;
+		width:100%;	padding:0; margin:0;}
+	.days li{
+		float: left; width:14.2%;
+		text-align: center; padding:5px 0; cursor: pointer;}
+
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class='kalend'>
+			<div class="month" id='month'>Апрель</div>
+			<ul class="week">
+				<li>ПН</li>
+				<li>ВТ</li>
+				<li>СР</li>
+				<li>ЧТ</li>
+				<li>ПТ</li>
+				<li>СБ</li>
+				<li>ВС</li>
+			</ul>	
+			<ul class="days">
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+				<li class="day">1</li>
+			</ul>
+		</div>
+	</div>
+    <div class="message">
+        <form onsubmit="writeRecord(); return false;" name="messageForm">{% csrf_token %}
+            <textarea rows="20" cols="80" name="messageTextForm"></textarea>
+            <input type="submit" value="Отправить"/>
+        </form>
+    </div>
+</body>
+</html>
+
+ ]]>
+  </Content>
+</Module>
