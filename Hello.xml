@@ -8,9 +8,22 @@
         <!DOCTYPE html>
         <html>
             <script>
-            	(function() {
-       			gadgets.window.adjustHeight();
-    	    	})();
+            	gadgets.util.registerOnLoadHandler(function() {
+                    if (!wave || !wave.isInWaveContainer()) {
+                        return;
+                    }
+                    var gadget = new Gadget(function(equation) {
+                        var state = wave.getState();
+                        state.submitDelta({equation: equation});
+                    }, function() {
+                        gadgets.window.adjustHeight();
+                    });
+                    wave.setStateCallback(function() {
+                        var state = wave.getState();
+                        gadget.onUpdate(state.get('equation'));
+                    });
+                    gadget.init();
+                });
             </script>
             <style>
                 .container {margin:0 auto; width:300px; margin-top:100px;left: 1000px;}
