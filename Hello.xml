@@ -8,6 +8,28 @@
         <!DOCTYPE html>
         <html>
             <style>
+                .container {margin:0 auto; width:300px; margin-top:100px;left: 1000px;}
+		.kalend {
+			width:100%;	
+		}
+		.month {
+			text-align: center;
+			font-size: 35px;
+			line-height: 35px;
+			font-weight: bold;}
+   		.message {float: left; display: none;}
+		.week {
+			list-style:none;
+			width:100%; padding:0; margin:0;}
+		.week li{
+			float: left; width:14.2%;
+			text-align: center; padding:10px 0;}
+		.days {
+			list-style:none;
+			width:100%;	padding:0; margin:0;}
+		.days li{
+			float: left; width:14.2%;
+			text-align: center; padding:5px 0; cursor: pointer;}
             </style>
             <body>
                 <div class="container">
@@ -23,42 +45,6 @@
 				<li>ВС</li>
 			</ul>	
 			<ul class="days">
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
 				<li class="day">1</li>
 				<li class="day">1</li>
 				<li class="day">1</li>
