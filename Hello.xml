@@ -7,6 +7,11 @@
     <![CDATA[     
         <!DOCTYPE html>
         <html>
+            <script>
+            	(function() {
+       			gadgets.window.adjustHeight();
+    	    	})();
+            </script>
             <style>
                 .container {margin:0 auto; width:300px; margin-top:100px;left: 1000px;}
 		.kalend {
