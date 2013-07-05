@@ -32,8 +32,8 @@
 		}
 		.month {
 			text-align: center;
-			font-size: 35px;
-			line-height: 35px;
+			font-size: 15px;
+			line-height: 15px;
 			font-weight: bold;}
    		.message {float: left; display: none;}
 		.week {
@@ -116,7 +116,6 @@
 			</ul>
 		</div>
 	</div>
-               Hello, world!
             </body>
         </html>
     ]]>
