@@ -120,7 +120,7 @@
 	 -moz-box-sizing:border-box;
 	 -webkit-box-sizing:border-box;
 	 box-sizing:border-box;}
-	.container {position: relative; margin:0 auto; width:200px;}
+	.container {position: relative; margin:0 auto; width:200px;top: 10px;}
 	.kalend_days {
 		 width:100%;min-width: 200px; overflow: auto;background-color: white;
 		box-shadow: 0 0 9px #87CEFA;
@@ -164,7 +164,7 @@
 	.months { list-style: none;width: 100%; padding:2px; margin:0;}
 	.months li {
 		float: left; width:25%;font-size: 15px;
-		text-align: center; padding:4px 0;}
+		text-align: center; padding:10px 0;}
 	.mon {
 		background-color: white;
 		border-radius: 2px 2px 2px 2px;
