@@ -164,7 +164,7 @@
 	.months { list-style: none;width: 100%; padding:2px; margin:0;}
 	.months li {
 		float: left; width:25%;font-size: 15px;
-		text-align: center; padding:10px 0;}
+		text-align: center; padding:11px 0;}
 	.mon {
 		background-color: white;
 		border-radius: 2px 2px 2px 2px;
@@ -182,7 +182,7 @@
 	.years {list-style: none;width: 100%; padding:2px; margin:0;}
 	.years li {
 		float: left; width:20%;font-size: 15px;
-		text-align: center; padding:4px 0;}
+		text-align: center; padding:6px 0;}
 	.year {
 		background-color: white;
 		border-radius: 2px 2px 2px 2px;
