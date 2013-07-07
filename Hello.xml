@@ -120,7 +120,7 @@
 	 -moz-box-sizing:border-box;
 	 -webkit-box-sizing:border-box;
 	 box-sizing:border-box;}
-	.container {margin:0 auto; width:200px;top: 2px;}
+	.container {margin:0 auto; width:200px;top: 5px;}
 	.kalend_days {
 		 width:100%;min-width: 200px; overflow: auto;background-color: white;
 		box-shadow: 0 0 9px #87CEFA;
