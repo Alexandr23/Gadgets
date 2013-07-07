@@ -7,54 +7,243 @@
     <![CDATA[     
         <!DOCTYPE html>
         <html>
-            <script>
-            	gadgets.util.registerOnLoadHandler(function() {
-                    if (!wave || !wave.isInWaveContainer()) {
-                        return;
-                    }
-                    var gadget = new Gadget(function(equation) {
-                        var state = wave.getState();
-                        state.submitDelta({equation: equation});
-                    }, function() {
-                        gadgets.window.adjustHeight();
-                    });
-                    wave.setStateCallback(function() {
-                        var state = wave.getState();
-                        gadget.onUpdate(state.get('equation'));
-                    });
-                    gadget.init();
-                });
-            </script>
-            <style>
-                .container {margin:0 auto; width:100px; heigth:100px;}
-		.kalend {
-			width:100%;	
-		}
-		.month {
-			text-align: center;
-			font-size: 10px;
-			line-height: 10px;
-			font-weight: bold;}
-   		.message {float: left; display: none;}
-		.week {
-			list-style:none;
-			width:100%; padding:0; margin:0;font-size: 10px;
-			line-height: 10px;}
-		.week li{
-			float: left; width:14.2%;
-			text-align: center; padding:10px 0;}
-		.days {
-			list-style:none;
-			width:100%;	padding:0; margin:0;}
-		.days li{
-			float: left; width:14.2%;
-			text-align: center; padding:5px 0; cursor: pointer;font-size: 10px;
-			line-height: 10px;}
-            </style>
-            <body>
-                <div class="container">
-  	<div class='kalend'>
-			<div class="month" id='month'>Апрель</div>
+<head>
+<title>Week2</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+
+	$(document).ready( function(){	
+												
+		var createtable = function (m1, y1){//функция создания календаря (дни)								
+			// описание переменных и констант
+			var arr = ['Январь','Февраль','Март','Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+			var arrcount1 = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			var arrcount2 = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			var m0 = 1;
+			var y0 = 1980;
+			var s0 = 2; // день недели, на который выпало 1 января 1980 года
+			var m = m0;
+			var y = y0;
+			var d = 0;
+			var s = s0;
+			
+			while((m<m1)||(y<y1)) {if (y%4==0) {d = d + arrcount2[m-1]} else {d = d + arrcount1[m-1]}; if (m<12){m++;} else {y++; m=1;};};
+			//количество дней от 1.01.13 до 1-го числа выбранного месяца
+			s = s + (d - 1 ) % 7 + 1;  //d - количество дней от 1 января 1980 до выбранной даты; 
+						 	  		   //s - номер дня недели, на который приходится 1-ое число месяца (0 - понедельник, 1 -вторник, и т.д.)
+							  		   // -1 и + 1 на случай если s0+d кратно 7-ми, т.е. месяц начинается в воскресенье (чтоб не обнулилось, а осталось =7)
+			var b = document.getElementsByClassName('day');     //заполнение  страницы календаря
+			if (s==1){s=8};										//если месяц начинается с понедельника, то первой строкой будет неделя предыдущего месяца
+			//високосный год
+			if (y1%4==0) {
+				for (var k=s-1; k<b.length; k++){                   
+					b[k].innerHTML = (k-s+1) % arrcount2[m1-1]+1;    //заполняется текущий месяц с 1-го по послдениее число и первые дни след. месяца 
+					b[k].style.color = "black";
+					if ((k-s+1)>= arrcount2[m1-1]) {b[k].style.color = "grey"}; //дни след. месяца становятся серыми
+				};    
+				for (var k=s-2; k>=0; k=k-1) {
+					b[k].innerHTML = arrcount2[(m1+10)%12]+k-s+2;	 //заполняется дни предыдущего месяца
+					b[k].style.color = "grey";                       //дни предыдущего месяца становятся серыми
+				};
+			}
+			//невисокосный год
+			else { 
+				for (var k=s-1; k<b.length; k++){                   
+				b[k].innerHTML = (k-s+1) % arrcount1[m1-1]+1;        //заполняется текущий месяц с 1-го по послдениее число и первые дни след. месяца 
+				b[k].style.color = "black";
+				if ((k-s+1)>= arrcount1[m1-1]) {b[k].style.color = "grey"}; //дни след. месяца становятся серыми
+			}    
+			for (var k=s-2; k>=0; k=k-1) {
+				b[k].innerHTML = arrcount1[(m1+10)%12]+k-s+2;	     //заполняется дни предыдущего месяца
+				b[k].style.color = "grey";                           //дни предыдущего месяца становятся серыми
+			};
+			};
+			
+			var a = document.getElementById('month').innerHTML = arr[m1-1]+' '+y1;	//устанавливается название месяца и года	
+						
+		};
+		//создание таблицы с годами
+		function tableyears(y1){
+			var c = document.getElementsByClassName('year');
+			for (var k=0; k<c.length; k++){
+				c[k].innerHTML = y1 - 12 + k;
+			};
+		};
+		
+		var m1 = 1;
+		var y1 = 2013;
+		
+		//устанавливается исходная дата (1 января 2013 года)		
+		createtable(1, 2013); 		
+		//устанавливается следующий месяц относительно текущего
+		$("#imgforward").click (function (){ 
+			if (m1==12) {m1=1; y1++;} else {m1++};
+			createtable(m1, y1);
+		});	
+		//устанавливается предыдущий месяц относительно текущего	
+		$("#imgback").click (function (){ 
+			if (m1==1) {y1=y1-1; m1=12;} else {m1=m1-1;};
+			createtable(m1, y1);
+		});	
+		//создает таблицу месяцев
+		$("#month").click(function(){
+			var a = document.getElementById('year').innerHTML = y1;
+			$(".kalend_months").css('display', 'block');
+			$(".kalend_days").css('display', 'none');
+		});
+		//выбор месяца
+		$(".mon").click(function(){
+			m1 = $(this).attr('id');
+			createtable(m1, y1);
+			$(".kalend_months").css('display', 'none');
+			$(".kalend_days").css('display', 'block');
+		});
+		//создает таблицу с годами
+		$("#year").click(function(){
+			$(".kalend_months").css('display', 'none');
+			$(".kalend_year").css('display', 'block');
+			tableyears(y1);		
+		});
+		//выбор года
+		$(".year").click(function(){
+			y1 = $(this).text();
+			$(".kalend_months").css('display', 'block');
+			var a = document.getElementById('year').innerHTML = y1;
+			$(".kalend_year").css('display', 'none');
+		});	
+	});
+	
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+	*{
+	 -moz-box-sizing:border-box;
+	 -webkit-box-sizing:border-box;
+	 box-sizing:border-box;}
+	.container {position: relative; margin:0 auto; width:250px; margin-top:100px;}
+	.kalend_days {
+		 width:100%;min-width: 200px; overflow: auto;background-color: white;
+		box-shadow: 0 0 9px #87CEFA;
+       	-webkit-box-shadow: 0 0 9px #87CEFA;
+        -moz-box-shadow: 0 0 9px #87CEFA;}
+	.month {
+		text-align: center;font-size: 25px; line-height: 35px; font-weight: bold;cursor: default;}
+	#month:hover {color: #87CEFA;}
+	.week {
+		list-style:none;
+		width:100%;	padding:2px; margin:0;
+        cursor: pointer;}
+	.week li{
+		float: left; width:14.2857%;font-size: 15px;font-weight: bold;
+		text-align: right; padding:5px 0;padding-right: 5%;}
+	.days {
+		list-style:none;
+		width:100%;	padding:2px; margin:0;}
+	.days li{
+		float: left; width:14.2857%;font-size: 15px;
+		text-align: right; padding:5px 0;padding-right: 5%;}
+	.day {
+		background-color: white;
+		border-radius: 2px 2px 2px 2px;
+        -webkit-border-radius: 2px 2px 2px 2px;
+        -moz-border-radius: 2px 2px 2px 2px;
+        cursor: pointer;}
+	.day:hover {
+		background-color:#d5fcff;}
+	img {
+		position: absolute; top: 0;opacity: 0; height: 30px; width: 30px;}
+	#imgback {left: 0;}
+	#imgforward {right: 0;}
+	img:hover { opacity: 0.5;}
+	
+	.kalend_months { width:100%;min-width: 200px; overflow: auto;background-color: white; display: none;
+		box-shadow: 0 0 9px #87CEFA;
+       	-webkit-box-shadow: 0 0 9px #87CEFA;
+        -moz-box-shadow: 0 0 9px #87CEFA;}
+	#year {text-align: center;font-size: 25px; line-height: 35px; font-weight: bold;cursor: default;}
+	.months { list-style: none;width: 100%; padding:2px; margin:0;}
+	.months li {
+		float: left; width:25%;font-size: 15px;
+		text-align: center; padding:23.5px 0;}
+	.mon {
+		background-color: white;
+		border-radius: 2px 2px 2px 2px;
+        -webkit-border-radius: 2px 2px 2px 2px;
+        -moz-border-radius: 2px 2px 2px 2px;
+        cursor: pointer;}
+	.mon:hover {
+		background-color:#d5fcff;}
+	
+	.kalend_year {
+		width:100%;min-width: 200px; overflow: auto;background-color: white;display: none;
+		box-shadow: 0 0 9px #87CEFA;
+       	-webkit-box-shadow: 0 0 9px #87CEFA;
+        -moz-box-shadow: 0 0 9px #87CEFA;}
+	.years {list-style: none;width: 100%; padding:2px; margin:0;}
+	.years li {
+		float: left; width:20%;font-size: 15px;
+		text-align: center; padding:14px 0;}
+	.year {
+		background-color: white;
+		border-radius: 2px 2px 2px 2px;
+        -webkit-border-radius: 2px 2px 2px 2px;
+        -moz-border-radius: 2px 2px 2px 2px;
+        cursor: pointer;}
+	.year:hover {background-color:#d5fcff;}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="kalend_year">
+			<ul class="years">
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+				<li class="year"></li>
+			</ul>
+		</div>
+		
+		<div class="kalend_months">
+			<div id="year"></div>
+			<ul class="months">
+				<li class="mon" id="1">Янв</li>
+				<li class="mon" id="2">Фев</li>
+				<li class="mon" id="3">Мар</li>
+				<li class="mon" id="4">Апр</li>
+				<li class="mon" id="5">Май</li>
+				<li class="mon" id="6">Июн</li>
+				<li class="mon" id="7">Июл</li>
+				<li class="mon" id="8">Авг</li>
+				<li class="mon" id="9">Сен</li>
+				<li class="mon" id="10">Окт</li>
+				<li class="mon" id="11">Ноя</li>
+				<li class="mon" id="12">Дек</li>
+			</ul>
+		</div>
+		
+		<div class='kalend_days'>
+			<div class="month"><img id="imgback" src="11.png"><span id="month">Январь 2013</span><img id="imgforward" src="12.png" align="right"></div>
 			<ul class="week">
 				<li>ПН</li>
 				<li>ВТ</li>
@@ -65,61 +254,18 @@
 				<li>ВС</li>
 			</ul>	
 			<ul class="days">
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
-				<li class="day">1</li>
+				<li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li>
+				<li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li>
+				<li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li>
+				<li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li>
+				<li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li>
+				<li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li>
+				<li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li><li class="day"></li>
 			</ul>
 		</div>
 	</div>
-            </body>
-        </html>
+</body>
+</html>
     ]]>
   </Content>
 </Module>
