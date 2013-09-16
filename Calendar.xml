@@ -181,12 +181,6 @@
 			</ul>
 		</div>
 	</div>
-    <div class="message">
-        <form onsubmit="writeRecord(); return false;" name="messageForm">{% csrf_token %}
-            <textarea rows="20" cols="80" name="messageTextForm"></textarea>
-            <input type="submit" value="Отправить"/>
-        </form>
-    </div>
 </body>
 </html>
 
