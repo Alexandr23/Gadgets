@@ -121,7 +121,7 @@
                 this.style.backgroundColor = "#d5fcff";
                 $(".stat").animate().slideDown();
             });
-            gadgets.window.adjustHeight(height)
+            gadgets.window.adjustHeight(500);
         });
 
     </script>
